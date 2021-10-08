@@ -1,0 +1,93 @@
+Using the default profile...
+Feature: display list of movies filtered by MPAA rating
+  As a concerned parent
+  So that I can quickly browse movies appropriate for my family
+  I want to see movies matching only certain MPAA ratings
+
+  Background: movies have been added to database # features/filter_movie_list.feature:7
+    Given the following movies exist:            # features/step_definitions/movie_steps.rb:3
+      | title                   | rating | release_date |
+      | Aladdin                 | G      | 25-Nov-1992  |
+      | The Terminator          | R      | 26-Oct-1984  |
+      | When Harry Met Sally    | R      | 21-Jul-1989  |
+      | The Help                | PG-13  | 10-Aug-2011  |
+      | Chocolat                | PG-13  | 5-Jan-2001   |
+      | Amelie                  | R      | 25-Apr-2001  |
+      | 2001: A Space Odyssey   | G      | 6-Apr-1968   |
+      | The Incredibles         | PG     | 5-Nov-2004   |
+      | Raiders of the Lost Ark | PG     | 12-Jun-1981  |
+      | Chicken Run             | G      | 21-Jun-2000  |
+    And I am on the RottenPotatoes home page     # features/step_definitions/web_steps.rb:44
+    Then 10 seed movies should exist             # features/step_definitions/movie_steps.rb:11
+
+  Scenario: restrict to movies with 'PG' or 'R' ratings                    # features/filter_movie_list.feature:26
+    # enter step(s) to check the 'PG' and 'R' checkboxes
+    When I check the following ratings: PG, R                              # features/step_definitions/movie_steps.rb:33
+    # enter step(s) to uncheck all other checkboxes
+    And I uncheck the following ratings: G, PG-13, NC-17                   # features/step_definitions/movie_steps.rb:33
+    # enter step to "submit" the search form on the homepage
+    And I press "ratings_submit"                                           # features/step_definitions/web_steps.rb:52
+    # enter step(s) to ensure that PG and R movies are visible
+    Then I should see PG, R in column Rating in table movies               # features/step_definitions/movie_steps.rb:75
+    # enter step(s) to ensure that other movies are not visible
+    Then I should not see G, PG-13, NC-17 in column Rating in table movies # features/step_definitions/movie_steps.rb:75
+
+  Scenario: all ratings selected                        # features/filter_movie_list.feature:39
+    # see assignment
+    When I check the following ratings: G, PG, PG-13, R # features/step_definitions/movie_steps.rb:33
+    Then I should see all the movies                    # features/step_definitions/movie_steps.rb:50
+
+  Scenario: restrict to movies with 'G', 'PG', or 'R' ratings:         # features/filter_movie_list.feature:45
+    Given I check the following ratings: G, PG, R                      # features/step_definitions/movie_steps.rb:33
+    Given I uncheck the following ratings: PG-13, NC-17                # features/step_definitions/movie_steps.rb:33
+    Then checkbox "ratings_G, ratings_PG, ratings_R" should be checked # features/step_definitions/movie_steps.rb:85
+    Then checkbox "ratings_PG-13, ratings_NC-17" should not be checked # features/step_definitions/movie_steps.rb:85
+
+Feature: display list of movies sorted by different criteria
+  As an avid moviegoer
+  So that I can quickly browse movies based on my preferences
+  I want to see movies sorted by title or release date
+
+  Background: movies have been added to database # features/sort_movie_list.feature:7
+    Given the following movies exist:            # features/step_definitions/movie_steps.rb:3
+      | title                   | rating | release_date |
+      | Aladdin                 | G      | 25-Nov-1992  |
+      | The Terminator          | R      | 26-Oct-1984  |
+      | When Harry Met Sally    | R      | 21-Jul-1989  |
+      | The Help                | PG-13  | 10-Aug-2011  |
+      | Chocolat                | PG-13  | 5-Jan-2001   |
+      | Amelie                  | R      | 25-Apr-2001  |
+      | 2001: A Space Odyssey   | G      | 6-Apr-1968   |
+      | The Incredibles         | PG     | 5-Nov-2004   |
+      | Raiders of the Lost Ark | PG     | 12-Jun-1981  |
+      | Chicken Run             | G      | 21-Jun-2000  |
+    And I am on the RottenPotatoes home page     # features/step_definitions/web_steps.rb:44
+    Then 10 seed movies should exist             # features/step_definitions/movie_steps.rb:11
+
+  Scenario: sort movies alphabetically                               # features/sort_movie_list.feature:25
+    When I follow "Movie Title"                                      # features/step_definitions/web_steps.rb:56
+    Then I should see "2001: A Space Odyssey" before "Aladdin"       # features/step_definitions/movie_steps.rb:18
+    Then I should see "Aladdin" before "Amelie"                      # features/step_definitions/movie_steps.rb:18
+    Then I should see "Amelie" before "Chicken Run"                  # features/step_definitions/movie_steps.rb:18
+    Then I should see "Chicken Run" before "Chocolat"                # features/step_definitions/movie_steps.rb:18
+    Then I should see "Chocolat" before "Raiders of the Lost Ark"    # features/step_definitions/movie_steps.rb:18
+    Then I should see "Raiders of the Lost Ark" before "The Help"    # features/step_definitions/movie_steps.rb:18
+    Then I should see "The Help" before "The Incredibles"            # features/step_definitions/movie_steps.rb:18
+    Then I should see "The Incredibles" before "The Terminator"      # features/step_definitions/movie_steps.rb:18
+    Then I should see "The Terminator" before "When Harry Met Sally" # features/step_definitions/movie_steps.rb:18
+
+  Scenario: sort movies in increasing order of release date                      # features/sort_movie_list.feature:40
+    When I follow "Release Date"                                                 # features/step_definitions/web_steps.rb:56
+    Then I should see "1968-04-06 00:00:00 UTC" before "1981-06-12 00:00:00 UTC" # features/step_definitions/movie_steps.rb:18
+    Then I should see "1981-06-12 00:00:00 UTC" before "1984-10-26 00:00:00 UTC" # features/step_definitions/movie_steps.rb:18
+    Then I should see "1984-10-26 00:00:00 UTC" before "1989-07-21 00:00:00 UTC" # features/step_definitions/movie_steps.rb:18
+    Then I should see "1989-07-21 00:00:00 UTC" before "1992-11-25 00:00:00 UTC" # features/step_definitions/movie_steps.rb:18
+    Then I should see "1992-11-25 00:00:00 UTC" before "2000-06-21 00:00:00 UTC" # features/step_definitions/movie_steps.rb:18
+    Then I should see "2000-06-21 00:00:00 UTC" before "2001-01-05 00:00:00 UTC" # features/step_definitions/movie_steps.rb:18
+    Then I should see "2001-01-05 00:00:00 UTC" before "2001-04-25 00:00:00 UTC" # features/step_definitions/movie_steps.rb:18
+    Then I should see "2001-04-25 00:00:00 UTC" before "2004-11-05 00:00:00 UTC" # features/step_definitions/movie_steps.rb:18
+    Then I should see "2004-11-05 00:00:00 UTC" before "2011-08-10 00:00:00 UTC" # features/step_definitions/movie_steps.rb:18
+
+5 scenarios (5 passed)
+46 steps (46 passed)
+0m0.660s
