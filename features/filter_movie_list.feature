@@ -38,7 +38,7 @@ Scenario: restrict to movies with 'PG' or 'R' ratings
   
 Scenario: all ratings selected
   # see assignment
-  When I check the following ratings: G, PG, PG-13, R
+  When I check the following ratings: G, PG, PG-13, R, NC-17
   Then I should see all the movies
 
 # Extra since instructions mentioned using Given
@@ -47,3 +47,20 @@ Scenario: restrict to movies with 'G', 'PG', or 'R' ratings:
   And I uncheck the following ratings: PG-13, NC-17
   Then checkbox "ratings_G, ratings_PG, ratings_R" should be checked
   Then checkbox "ratings_PG-13, ratings_NC-17" should not be checked
+  
+  
+# Extra Scenario 2: Noticed part 2.3 said I would use "And I should see "movie"" but I didnt, so felt I should do it this way as well.
+Scenario: Extra Scenario (long way) restrict to movies with 'G', 'PG', or 'R' ratings
+  Given I check the following ratings: G, PG, R
+  And I uncheck the following ratings: PG-13, NC-17
+  And I press "ratings_submit"
+  Then I should see "Aladdin"
+  And I should see "The Terminator"
+  And I should see "When Harry Met Sally"
+  And I should see "Amelie"
+  And I should see "2001: A Space Odyssey"
+  And I should see "The Incredibles"
+  And I should see "Raiders of the Lost Ark"
+  And I should see "Chicken Run"
+  And I should not see "The Help"
+  And I should not see "Chocolat"

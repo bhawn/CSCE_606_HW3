@@ -32,10 +32,10 @@ Feature: display list of movies filtered by MPAA rating
     # enter step(s) to ensure that other movies are not visible
     Then I should not see G, PG-13, NC-17 in column Rating in table movies # features/step_definitions/movie_steps.rb:75
 
-  Scenario: all ratings selected                        # features/filter_movie_list.feature:39
+  Scenario: all ratings selected                               # features/filter_movie_list.feature:39
     # see assignment
-    When I check the following ratings: G, PG, PG-13, R # features/step_definitions/movie_steps.rb:33
-    Then I should see all the movies                    # features/step_definitions/movie_steps.rb:50
+    When I check the following ratings: G, PG, PG-13, R, NC-17 # features/step_definitions/movie_steps.rb:33
+    Then I should see all the movies                           # features/step_definitions/movie_steps.rb:50
 
   # Extra since instructions mentioned using Given
   Scenario: restrict to movies with 'G', 'PG', or 'R' ratings:         # features/filter_movie_list.feature:45
@@ -43,6 +43,22 @@ Feature: display list of movies filtered by MPAA rating
     And I uncheck the following ratings: PG-13, NC-17                  # features/step_definitions/movie_steps.rb:33
     Then checkbox "ratings_G, ratings_PG, ratings_R" should be checked # features/step_definitions/movie_steps.rb:85
     Then checkbox "ratings_PG-13, ratings_NC-17" should not be checked # features/step_definitions/movie_steps.rb:85
+
+  # Extra Scenario 2: Noticed part 2.3 said I would use "And I should see "movie"" but I didnt, so felt I should do it this way as well.
+  Scenario: Extra Scenario (long way) restrict to movies with 'G', 'PG', or 'R' ratings # features/filter_movie_list.feature:53
+    Given I check the following ratings: G, PG, R                                       # features/step_definitions/movie_steps.rb:33
+    And I uncheck the following ratings: PG-13, NC-17                                   # features/step_definitions/movie_steps.rb:33
+    And I press "ratings_submit"                                                        # features/step_definitions/web_steps.rb:52
+    Then I should see "Aladdin"                                                         # features/step_definitions/web_steps.rb:105
+    And I should see "The Terminator"                                                   # features/step_definitions/web_steps.rb:105
+    And I should see "When Harry Met Sally"                                             # features/step_definitions/web_steps.rb:105
+    And I should see "Amelie"                                                           # features/step_definitions/web_steps.rb:105
+    And I should see "2001: A Space Odyssey"                                            # features/step_definitions/web_steps.rb:105
+    And I should see "The Incredibles"                                                  # features/step_definitions/web_steps.rb:105
+    And I should see "Raiders of the Lost Ark"                                          # features/step_definitions/web_steps.rb:105
+    And I should see "Chicken Run"                                                      # features/step_definitions/web_steps.rb:105
+    And I should not see "The Help"                                                     # features/step_definitions/web_steps.rb:123
+    And I should not see "Chocolat"                                                     # features/step_definitions/web_steps.rb:123
 
 Feature: display list of movies sorted by different criteria
   As an avid moviegoer
@@ -89,6 +105,6 @@ Feature: display list of movies sorted by different criteria
     Then I should see "2001-04-25 00:00:00 UTC" before "2004-11-05 00:00:00 UTC" # features/step_definitions/movie_steps.rb:18
     Then I should see "2004-11-05 00:00:00 UTC" before "2011-08-10 00:00:00 UTC" # features/step_definitions/movie_steps.rb:18
 
-5 scenarios (5 passed)
-46 steps (46 passed)
-0m0.690s
+6 scenarios (6 passed)
+62 steps (62 passed)
+0m0.812s
