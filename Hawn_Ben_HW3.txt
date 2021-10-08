@@ -37,6 +37,7 @@ Feature: display list of movies filtered by MPAA rating
     When I check the following ratings: G, PG, PG-13, R # features/step_definitions/movie_steps.rb:33
     Then I should see all the movies                    # features/step_definitions/movie_steps.rb:50
 
+  # Extra since instructions mentioned using Given
   Scenario: restrict to movies with 'G', 'PG', or 'R' ratings:         # features/filter_movie_list.feature:45
     Given I check the following ratings: G, PG, R                      # features/step_definitions/movie_steps.rb:33
     And I uncheck the following ratings: PG-13, NC-17                  # features/step_definitions/movie_steps.rb:33
@@ -90,4 +91,4 @@ Feature: display list of movies sorted by different criteria
 
 5 scenarios (5 passed)
 46 steps (46 passed)
-0m0.668s
+0m0.690s

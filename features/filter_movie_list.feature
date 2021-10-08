@@ -41,7 +41,7 @@ Scenario: all ratings selected
   When I check the following ratings: G, PG, PG-13, R
   Then I should see all the movies
 
-
+# Extra since instructions mentioned using Given
 Scenario: restrict to movies with 'G', 'PG', or 'R' ratings:
   Given I check the following ratings: G, PG, R
   And I uncheck the following ratings: PG-13, NC-17
