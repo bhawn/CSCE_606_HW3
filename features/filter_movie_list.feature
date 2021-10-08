@@ -44,6 +44,6 @@ Scenario: all ratings selected
 
 Scenario: restrict to movies with 'G', 'PG', or 'R' ratings:
   Given I check the following ratings: G, PG, R
-  Given I uncheck the following ratings: PG-13, NC-17
+  And I uncheck the following ratings: PG-13, NC-17
   Then checkbox "ratings_G, ratings_PG, ratings_R" should be checked
   Then checkbox "ratings_PG-13, ratings_NC-17" should not be checked
